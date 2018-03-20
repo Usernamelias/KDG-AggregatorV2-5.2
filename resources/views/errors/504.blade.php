@@ -8,7 +8,7 @@
 
     <div class="container">
         <div class="row httpError">
-            <h1>Service Unavailable</h1>
+            <h1>Gateway Timeout</h1>
         </div>
     </div>
 

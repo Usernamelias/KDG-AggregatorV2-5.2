@@ -1,0 +1,746 @@
+nav {
+  background-color: #43425D !important;
+}
+
+#websiteHeading {
+  color: white !important;
+  font-weight: bold;
+  letter-spacing: 3px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  /*border: 1px solid red;*/
+}
+
+.navbar-collapse ul li a span {
+  color: white !important;
+  letter-spacing: 0.5px;
+}
+
+i {
+  margin-right: 10px;
+  color: #A5A4BF;
+}
+
+.navbar-nav li a {
+  border-bottom: 4px solid #43425D;
+  margin-right: 10px;
+}
+
+.navbar-nav li a:hover {
+  border-bottom: 4px solid #A3A0FB;
+}
+
+.navbar-nav li a:hover i, .navbar-nav li a.active:hover i, .navbar-nav li a.active:link i, .navbar-nav li a.active:visited i, .navbar-nav li a.active:active i {
+  color: #A3A0FB;
+}
+
+a.active:link, a.active:visited, a.active:active, a.active:hover {
+  border-bottom: 4px solid #A3A0FB !important;
+}
+
+.navbar-header {
+  background-color: #3C3B53;
+  border-bottom: 4px solid #3C3B53;
+  padding-left: 20px;
+}
+
+/*toggle button*/
+.navbar-toggle, .navbar-header .navbar-toggle:visited, .navbar-toggle:active, .navbar-toggle:focus {
+  background-color: #3C3B53 !important;
+  transition: all 0.5s ease-out;
+  border-color: #3C3B53 !important;
+}
+
+.navbar-header .navbar-toggle .icon-bar {
+  border: 1px solid #A3A0FB;
+  transition: all 0.5s ease-out
+}
+
+.navbar-header .navbar-toggle:hover .icon-bar {
+  border: 1px solid #A3A0FB;
+}
+
+.navbar-header .navbar-toggle:hover {
+  background-color: #353449 !important;
+  border: 1px solid #3C3B53;
+}
+/*end toggle button*/
+
+.tables {
+  background-color: #F0F0F7;
+  
+
+  display: block;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.tablesContainer {
+  min-height: 100%;
+  height: 100%;
+  display: block;
+  padding: 0;
+}
+
+.headerRow {
+  background-color: #F5F6FA;
+  color: #9A99AA;
+}
+
+tr {
+  background-color: white;
+}
+
+.tableHeadings {
+  color: #9A99AA;
+}
+
+.totalRow td {
+  font-weight: bold;
+}
+
+.aggregateTable .sync, .fa-sync {
+  color: #3B86FF;
+}
+
+html, body {
+  height: 100%;
+  color: #464358;
+}
+
+.navbar {
+  margin-bottom: 0;
+}
+
+select, select option {
+  color: black;
+}
+
+select:invalid, select option[value=""] {
+  color: lightgray !important;
+}
+
+[hidden] {
+  display: none;
+}
+
+#addEntryHeading {
+  color: #464358;
+}
+
+label {
+  color: #9B9CA5;
+  font-weight: bold;
+}
+
+.addEntrySection {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.nav-container {
+  padding-left: 0;
+}
+
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin: 0;
+}
+
+input[type='radio'], label {
+  display: inline;
+  vertical-align: top;
+}
+
+input.time {
+  float: right;
+  width: 60%;
+}
+
+.clockIconForm {
+  float: left;
+  vertical-align: middle;
+  margin: 0 auto;
+  padding: 7px;
+}
+
+input[type="submit"] {
+  color: white;
+  font-weight: bold;
+  background-color: #3B86FF;
+  width: 100% !important;
+  float: left !important;
+  display: block !important;
+  border: none !important;
+}
+
+input[type="submit"]:hover {
+  color: white;
+  background-color: #306ed1;
+}
+
+* {
+  box-sizing: border-box
+}
+
+.clear-button {
+  background: Transparent;
+  border: none !important;
+  padding: none !important;
+  font-size: 1em;
+  color: #9B9CA5;
+  text-align: left;
+  width: 60px;
+}
+
+.clear-button:hover {
+  color: #464358;
+}
+
+input, textarea, select {
+  border: 1px solid gray !important;
+  font-size: 1em !important;
+}
+
+::-webkit-input-placeholder {
+  color: lightgray !important;
+}
+
+:-moz-placeholder {
+  color: lightgray !important;
+}
+
+::-moz-placeholder {
+  color: lightgray !important;
+}
+
+:-ms-input-placeholder {
+  color: lightgray !important;
+}
+
+.writeins {
+  color: #9B9CA5;
+  text-decoration: underline;
+}
+
+.writeins:hover {
+  color: #464358;
+}
+
+.enterWriteInOption {
+  padding-top: none;
+  margin-top: none;
+  padding-bottom: 20px !important;
+}
+
+.fa-trash {
+  float: right;
+}
+
+.fa-trash, .fa-pencil-alt {
+  color: #9B9CA5;
+}
+
+.fa-trash:hover, .fa-pencil-alt:hover {
+  color: #464358;
+  cursor: pointer;
+}
+
+.sync span:hover, .fa-sync:hover {
+  color: #306ed1;
+  cursor: pointer;
+}
+
+.projectsContainer {
+  background-color: #F0F0F7;
+  min-height: 100%;
+  height: 100%;
+  display: block;
+  padding: 0;
+}
+
+th {
+  border: none !important;
+}
+
+td {
+  border-color: #F5F6FA !important;
+  border-width: 2px !important;
+}
+
+.inactiveTable .projectColumn, .activeTable .projectColumn {
+  width: 80%;
+}
+
+.inactiveTable .toggleColumnm, .activeTable .toggleColumn {
+  width: 20%;
+}
+
+#projectsHeadings1 {
+  display: inline;
+}
+
+#projectsHeadings2 {
+  margin-bottom: 10px;
+}
+
+.searchAndTitleContainer {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.mainPage h1, .mainPage h2 {
+  text-align: center;
+}
+
+#userName {
+  color: white !important;
+}
+
+#menuProfilePic {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a {
+  background-color: #43425D !important;
+  color: white !important;
+}
+
+.navbar-nav ul {
+  background-color: #43425D !important;
+  color: white !important;
+}
+
+.navbar-right ul li a{
+  color: white !important;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>.active>a:hover {
+  color: white !important;
+  border: none !important;
+}
+
+.dropdown-menu li a:hover{
+  border-color: transparent;
+  color: #A3A0FB !important;
+}
+
+.dropdown-menu li a:hover span{
+  color: #A3A0FB !important;
+}
+
+.dropdown-menu li a.active span {
+  color: #A3A0FB !important;
+}
+
+.dropdown-menu li a.active:link, .dropdown-menu li a.active:visited, 
+.dropdown-menu li a.active:active, .dropdown-menu li a.active:hover {
+  border-bottom: 4px solid transparent !important;
+}
+
+.dropdown-toggle:hover, .dropdown-toggle:focus, .dropdown-toggle:active, .dropdown-toggle:link {
+  border-color: transparent !important;
+}
+
+.dropdown-toggle:hover #userName, .dropdown-toggle:hover .caretUserName {
+  color: #A3A0FB !important;
+}
+
+.navbar-default .navbar-nav>li>a, .navbar-default .navbar-nav>li>a:visited {
+  color: white !important;
+}
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:active {
+  color: white !important;
+}
+
+nav ul li a:hover {
+  color: #A3A0FB !important;
+  background-color: #43425D !important;
+}
+
+.navbar-nav ul li a:hover {
+  background-color: #43425D !important;
+}
+
+nav ul li a:focus, nav ul li a:active {
+  border-bottom: 1px solid transparent !important;
+}
+
+.has-error, ul li.error{
+  color: #A94442; 
+}
+
+.has-error input, .has-error textarea, .has-error select{
+  border: 1px solid #A94442 !important;
+}
+
+.httpError{
+  text-align: center;
+}
+
+#doNotDelete{
+  border: 1px solid lightgray;
+}
+
+select, option{
+  overflow-x: auto !important;
+}
+
+.sync-button{
+  background: none;
+  border: none;
+}
+
+.disabled_button, .disabled_button:hover{
+  color: #9A99AA;
+  cursor: not-allowed !important;
+}
+
+.disabled_button i, .disabled_button span,
+.disabled_button i:hover, .disabled_button span:hover{
+  color: #9A99AA;
+  cursor: not-allowed !important;
+}
+
+.noActiveTasks{
+  color: red;
+  font-weight: bold;
+  font-size: 0.9em;
+  /* text-align: center; */
+}
+
+.taskColumn ul{
+  padding: 0;
+}
+
+.dateSubmit{
+  color: #464358 !important;
+}
+
+.fa-user{
+  display: none;
+}
+/*styles for popup edit box*/
+#editModal .modal-body{
+  padding: 40px !important;
+}
+.editBox, .timeEntryForm {
+  visibility: hidden;
+  position: absolute;
+  background: white;
+  z-index: 100;
+  top: 40%;
+  left: 50%;
+  width: 400px;
+  height: 700px;
+  margin-left: -200px;
+  margin-top: -200px;
+}
+
+.dimmer {
+  background: #43425D;
+  position: absolute;
+  opacity: .5;
+  top: 0;
+  z-index: 99;
+}
+
+.editTimeEntryHeader, .modal-header {
+  background-color: #3B86FF;
+  color: white;
+}
+
+.editBox .container-fluid, .timeEntryForm .container-fluid {
+  background-color: #3B86FF;
+}
+
+.editBox form, .timeEntryForm form {
+  padding: 20px;
+}
+
+.cancelButtonContainer {
+  text-align: right;
+}
+
+.cancelEdit {
+  font-size: 1em;
+  color: #9B9CA5;
+  text-align: right;
+  width: 80px;
+  padding: none !important;
+  background: Transparent;
+  border: none !important;
+}
+
+.cancelEdit:hover{
+  color: #464358;
+}
+
+/* #editModal .search-select{
+  width: 100%;
+} */
+/*End styles for popup edit box*/
+
+/*Styles for search box*/
+
+.search {
+  position: relative;
+  color: #aaa;
+  font-size: 16px;
+}
+
+.search input {
+  width: 250px;
+  height: 32px;
+  background: #fcfcfc;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
+}
+
+.search input {
+  text-indent: 32px;
+}
+
+.search .fa-search {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.search input[type='submit']{
+  display: none !important;
+}
+
+/*End styles for search box*/
+
+#taskTextField, #selectTask, #durationTextField, #enterStartEndTime, .taskTextField, .selectTask, .durationTextField, .enterStartEndTime {
+  display: none;
+}
+
+#writeInTask, #taskSelectField, #enterDuration, #startEndTime, .writeInTask, .taskSelectField, .enterDuration, .startEndTime {
+  display: block;
+}
+
+#writeInTask, #selectTask, #enterDuration, #enterStartEndTime, .writeInTask, .selectTask, .enterDuration, .enterStartEndTime {
+  cursor: pointer;
+}
+
+.clearTimes {
+  cursor: pointer;
+  float: right;
+  display: block;
+  border-radius: 5px;
+  background: lightgray;
+  padding: 5px;
+  border: none;
+  color: #515151;
+}
+.clearTimes:hover, .clearTimes:active{
+  background: #c6c4c4;
+  border: none;
+}
+.clearTimes:focus{
+  border: none;
+}
+
+.authTokenContainer{
+  margin-top: 20px;
+}
+
+.authTokenContainer .panel-heading {
+  color: #3C3B53;
+}
+
+.authtokenSuccess, .passwordResetSuccess,
+.authtokenFailure, .passwordResetError{
+  display: none;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.authtokenSuccess i {
+  color: #3C763D;
+  font-size: 1.5em;
+  margin-top: 20px;
+}
+
+#authtokenDirections li{
+  margin-bottom: 5px;
+}
+
+.authTokenContainer .panel-default{
+  margin-top: 10px;
+}
+
+.panel-default{
+  margin-top: 50px;
+}
+/*Toggle Switch for Projects. Source: https://www.w3schools.com/howto/howto_css_switch.asp*/
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: #1EDDFF;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/*End Toggle Switch Styles*/
+
+/*Datepicker*/
+#selectDate{
+  color: #464358;;
+  font-weight: bold;
+}
+#datepicker{
+  width:180px; 
+}
+#datepicker > span:hover{
+  cursor: pointer;
+}
+/*end datepicker*/
+
+@media only screen and (max-width: 767px) {
+  .dateSubmit{
+    margin-top: 10px;
+  }
+
+  .tables{
+    padding-bottom: 20px !important;
+    padding-top: 20px !important;
+  }
+  
+  #menuProfilePic{
+    display: none;
+  }
+ 
+  .fa-user{
+    display: inline-block;
+  }
+
+  .nav i{
+    padding-left: 10px !important;
+  }
+
+  .navbar-collapse {
+    background-color: #3C3B53;
+    border: none !important;
+    font-size: 1.2em;
+  }
+
+  .navbar-header {
+      padding-bottom: 10px;
+  }
+
+  .navbar-collapse {
+      text-align: center;
+  }
+  .navbar-collapse a{
+    border-bottom: 4px solid #3C3B53 !important;
+  }
+  a.active:link, a.active:visited, a.active:active, a.active:hover {
+    border-bottom: 4px solid #43425D !important;
+    background-color: #43425D;
+  }
+
+  .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a {
+    background-color: #3C3B53 !important;
+  }
+  
+  .navbar-nav ul {
+    background-color: #3C3B53 !important;
+  }
+  
+  .navbar-nav li a {
+    margin-right: 0;
+  }
+
+}
+
+@media only screen and (min-width: 768px) {
+
+  .tables{
+    min-height: 100%;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+
+  .search {
+    float: left;
+  }
+
+  #projectsHeadings1 {
+    float: left;
+    text-align: left;
+    clear: both;
+  }
+
+  .searchAndTitleContainer{
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+
+  .search {
+    float: right;
+  }
+}
