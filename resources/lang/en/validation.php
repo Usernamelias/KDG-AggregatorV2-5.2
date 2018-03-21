@@ -109,5 +109,6 @@ return [
     */
 
     'attributes' => [],
+    'one_or_the_other' => 'Must not fill in both duration and start/end time.'
 
 ];

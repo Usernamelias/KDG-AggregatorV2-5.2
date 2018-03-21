@@ -23,6 +23,8 @@ use GuzzleHttp\Client;
  */
 class TimeEntryController extends Controller
 {
+  private $request;
+
   /**
    * Method to show the workDonePage view.
    * @return view
@@ -56,9 +58,10 @@ class TimeEntryController extends Controller
       $aggregatedEntriesTableHeadline = "Entries Aggregated by Project";      
     }
     
-    $allEntries = TimeEntry::whereDate('created_at', '=', $entryDate)->get();   
+    $allEntries = TimeEntry::whereDate('created_at', '=', $entryDate)->where('user_id', '=', Auth::user()->id)->get();   
     $aggregatedEntries = TimeEntry::selectRaw('sum(time_entries.duration) as total, group_concat(time_entries.description separator "; ") as concatDescription, time_entries.project_name, time_entries.task, time_entries.billable')
     ->whereDate('created_at', '=', $entryDate)
+    ->where('user_id', '=', Auth::user()->id)
     ->groupBy('time_entries.project_name', 'time_entries.task', 'time_entries.billable')
     ->get();
     
@@ -106,7 +109,8 @@ class TimeEntryController extends Controller
    * @return redirect
    */
   public function saveTimeEntry(Request $request){
-
+    $this->setRequest($request);
+    $userID = Auth::user()->id;
     //Establishing rules for validation
     $rules = [
       'project_name' => 'required|max:75',
@@ -136,7 +140,7 @@ class TimeEntryController extends Controller
       $request->end_time = \Carbon\Carbon::createFromFormat('h:i A', $request->end_time);
       $rules['start_time'] = 'required_without:duration|before:end_time';
     }elseif($request->start_time != null && $request->end_time != null && $request->duration !== null){
-      //$rules['duration'] = [new OneOrTheOther];
+      $rules['duration'] = 'one_or_the_other';
     }elseif(($request->start_time != null && $request->end_time == null) || ($request->start_time == null && $request->end_time != null)){
       $rules['start_time'] = 'required_without:duration|before:end_time';
     }else{
@@ -150,7 +154,7 @@ class TimeEntryController extends Controller
       'task.required_without' => 'Required if not writing in task.',
       'writein.required_without' => 'Required if not selecting a task.',
       'duration.required_without_all' => 'Duration is required if not entering start and end time.',
-      'start_time.before' => 'The start time must be before the end time.'
+      'start_time.before' => 'The start time must be before the end time.',
     ];
 
     //passing my rules and messages over to the validator
@@ -176,12 +180,13 @@ class TimeEntryController extends Controller
       $timeEntry->duration = round((strtotime($request->end_time) - strtotime($request->start_time)) / 60,2);
     }else{
       $timeEntry->duration = UtilityController::durationToTotalMinutes($request->duration);
-      $timeEntry->start_time = $request->start_time;
-      $timeEntry->end_time = $request->end_time;
+      $timeEntry->start_time = null;
+      $timeEntry->end_time = null;
     }
 
     $timeEntry->billable = $request->billable;
     $timeEntry->description = $request->description;
+    $timeEntry->user_id = $userID;
 
     $timeEntry->save();
     /**End of new time entry creation in TimeEntry table */
@@ -208,7 +213,7 @@ class TimeEntryController extends Controller
    * @return redirect
    */
   public function editTimeEntry(Request $request){
-
+    $this->setRequest($request);
     $rules = [
       'project_name2' => 'required|max:75',
       'task2' => 'required_without:writein2',
@@ -219,22 +224,28 @@ class TimeEntryController extends Controller
       'description2' => 'required',
     ];
 
-    if(($request->start_time2 !== null && $request->end_time2 !== null && $request->duration2 !== null)){
-      //$rules['duration2'] = [new OneOrTheOther];
-    }
-
+    //If duration is not null, push another rule for duration that only allows
+    //a certain string of characters. Regex taken from Zoho.
     if($request->duration2 !== null){
       $rules['duration2'] = array('regex:/^\d{0,2}[\:\.]{1}\d{1,4}$|^\d{1,2}$/');
     }
 
-    if(($request->start_time2 !== null && $request->end_time2 !== null && $request->duration2 !== null)
-      || $request->start_time2 !== null && $request->end_time2 !== null && $request->duration2 === null){
+    /**
+     * If the start_time and end_time fields are not null but duration is, then reformat start
+     * and end time, and include a validation rule for start_time. If start_time, end_time,
+     * and duration are all not null, then include a OneOrTheOther rule for duration. If either
+     * start_time or end_time is null, but the other isn't, then include a rule for start_time.
+     * If none of these ifs apply, then include a validation rule for start_time.
+     */
+    if($request->start_time2 != null && $request->end_time2 != null && $request->duration2 == null){
       $request->start_time2 = \Carbon\Carbon::createFromFormat('h:i A', $request->start_time2);
       $request->end_time2 = \Carbon\Carbon::createFromFormat('h:i A', $request->end_time2);
       $rules['start_time2'] = 'required_without:duration2|before:end_time2';
-    }elseif($request->start_time2 === null && $request->end_time2 === null && $request->duration2 !== null){
-
-     }else{
+    }elseif($request->start_time2 != null && $request->end_time2 != null && $request->duration2 !== null){
+      $rules['duration2'] = 'one_or_the_other';
+    }elseif(($request->start_time2 != null && $request->end_time2 == null) || ($request->start_time2 == null && $request->end_time2 != null)){
+      $rules['start_time2'] = 'required_without:duration2|before:end_time2';
+    }else{
       $rules['start_time2'] = 'required_without:duration2';
     }
 
@@ -273,8 +284,8 @@ class TimeEntryController extends Controller
       $timeEntry->duration = round((strtotime($request->end_time2) - strtotime($request->start_time2)) / 60,2);
     }else{
       $timeEntry->duration = UtilityController::durationToTotalMinutes($request->duration2);
-      $timeEntry->start_time = $request->start_time2;
-      $timeEntry->end_time = $request->end_time2;
+      $timeEntry->start_time = null;
+      $timeEntry->end_time = null;
     }
 
     $timeEntry->billable = $request->billable2;
@@ -354,6 +365,14 @@ class TimeEntryController extends Controller
 
     }
 
+  }
+
+  public function getRequest(){
+    return $this->request;
+  }
+
+  function setRequest($request){
+    $this->request = $request;
   }
 }
 
