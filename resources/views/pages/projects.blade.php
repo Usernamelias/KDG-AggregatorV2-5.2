@@ -7,6 +7,7 @@
 @section('content')
   
   <div class="container-fluid projectsContainer">
+    
     <div class="col-sm-8 tables">      
       @if($searchTerm != null)
         @include('tables.searchResults')
@@ -15,6 +16,7 @@
         @include('tables.inactiveProjects')  
       @endif
     </div>
+    
   </div>
   
 @endsection

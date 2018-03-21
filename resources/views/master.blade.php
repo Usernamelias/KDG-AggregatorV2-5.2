@@ -14,7 +14,7 @@
         @stack('head')
 
     </head>
-    <body>
+    <body class="{{ $bodyClass or 'noClass' }}">
 
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container-fluid nav-container">
@@ -53,15 +53,12 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href='auth/logout'
+                                        <a href='{{ url("auth/logout") }}'
                                             onclick="
                                                      document.getElementById('logout-form').submit();">
                                             <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout
                                         </a>
 
-                                        <!-- <form id="logout-form" action='auth/logout' method="POST">
-                                            {{ csrf_field() }}
-                                        </form> -->
                                     </li>
                                     <li><a href="/settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
                                 </ul>

@@ -144,7 +144,7 @@
     </div>
 
     <div class="form-group col-sm-6 clearButtonContainer">
-      <input class="form-control btn btn-yellow btn-xs clear-button" value="CLEAR">
+      <input class="form-control input-lg btn clear-button" value="CLEAR">
     </div>
 
   </form>

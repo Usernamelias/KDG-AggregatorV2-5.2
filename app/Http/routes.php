@@ -43,9 +43,6 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
-Route::get('/blah', function(){
-	return view('auth.emails.password');
-});
 
 
 
@@ -57,18 +54,27 @@ Route::get('/blah', function(){
 
 
 
-/*For debugging*/
-if(App::environment('local')) {
 
-    Route::get('/drop', function() {
 
-        $db = Config::get('database.connections.mysql.database');
 
-        DB::statement('DROP database '.$db);
-        DB::statement('CREATE database '.$db);
 
-        return 'Dropped '.$db.'; created '.$db.'.';
-    });
 
-};
-/*End "for debugging"*/
+
+
+
+
+// /*For debugging*/
+// if(App::environment('local')) {
+
+//     Route::get('/drop', function() {
+
+//         $db = Config::get('database.connections.mysql.database');
+
+//         DB::statement('DROP database '.$db);
+//         DB::statement('CREATE database '.$db);
+
+//         return 'Dropped '.$db.'; created '.$db.'.';
+//     });
+
+// };
+// /*End "for debugging"*/

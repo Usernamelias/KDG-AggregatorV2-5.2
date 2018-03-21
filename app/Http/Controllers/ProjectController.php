@@ -39,7 +39,8 @@ class ProjectController extends Controller
             'enabledProjects' => $enabledProjects,
             'disabledProjects' => $disabledProjects,
             'searchResults' => $searchResults,
-            'searchTerm' => $searchTerm
+            'searchTerm' => $searchTerm,
+            'bodyClass' => 'projectsBody'
         ]);    
     }
 

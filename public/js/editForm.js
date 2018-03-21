@@ -39,13 +39,13 @@ $(document).ready(function() {
         $(".combobox").trigger('change');
         $("select[name=task2]").val($(e.relatedTarget).data('task'));
 
-        $(".clearTimes").click(function() {
-            $(this).closest('form').find("input[name=start_time2]").val("");
-            $(this).closest('form').find("input[name=end_time2]").val("");
-        });
-
         $('div').removeClass('has-error');
         $('.error-list').hide();
+    });
+
+    $(".clearTimes").click(function() {
+        $(this).closest('form').find("input[name=start_time2]").val("");
+        $(this).closest('form').find("input[name=end_time2]").val("");
     });
 });
 

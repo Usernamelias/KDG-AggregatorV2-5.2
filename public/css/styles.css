@@ -191,12 +191,16 @@ input[type="submit"]:hover {
   padding: none !important;
   font-size: 1em;
   color: #9B9CA5;
-  text-align: left;
-  width: 60px;
+  text-align: center;
+  width: 80px;
+  outline: none !important;
+  box-shadow: none;
 }
 
-.clear-button:hover {
+.clear-button:hover, .clear-button:focus, .clear-button:active, .clear-button:link {
   color: #464358;
+  outline: none !important;
+  box-shadow: none;
 }
 
 input, textarea, select {
@@ -259,6 +263,10 @@ input, textarea, select {
   height: 100%;
   display: block;
   padding: 0;
+}
+
+.projectsBody{
+  background-color: #F0F0F7;
 }
 
 th {
@@ -385,6 +393,14 @@ nav ul li a:focus, nav ul li a:active {
 
 #doNotDelete{
   border: 1px solid lightgray;
+  outline: none !important;
+  box-shadow: none;
+}
+
+#doNotDelete:hover, #doNotDelete:focus, #doNotDelete:active{
+  color: #464358;
+  outline: none !important;
+  box-shadow: none;
 }
 
 select, option{
@@ -475,10 +491,14 @@ select, option{
   padding: none !important;
   background: Transparent;
   border: none !important;
+  outline: none !important;
+  box-shadow: none;
 }
 
 .cancelEdit:hover{
   color: #464358;
+  outline: none !important;
+  box-shadow: none;
 }
 
 /* #editModal .search-select{
