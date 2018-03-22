@@ -19,6 +19,7 @@ class ZohoRequests {
     /**Array for holding Zoho tasks. */
     private $allTasks = array();
     private $taskAndUsers = array();
+    private $projectAndUsers = array();
     private $taskIDs = array();
 
     /**
@@ -71,8 +72,8 @@ class ZohoRequests {
     private function zohoTasksViaKali(){
 
         $page = 1;
-
         $client = new Client(['base_uri' => env('BASE_URI_KALI')]);
+        $users = User::all();
 
         while(true){
          
@@ -99,6 +100,13 @@ class ZohoRequests {
                     foreach($task->Owners as $owner){
                         if(property_exists($owner, 'ZohoUserID')){                                           
                             array_push($ownerIDs, $owner->ZohoUserID);
+
+                            foreach($users as $user){
+                                if($user->zoho_id == $owner->ZohoUserID){
+                                    array_push($this->projectAndUsers[$owner->ZohoUserID], $task->ZohoProjectID);
+                                    $this->projectAndUsers[$owner->ZohoUserID] = array_unique($this->projectAndUsers[$owner->ZohoUserID]);    
+                                }
+                            }
                         }
                     }
                     $this->allTasks[] = array(
@@ -106,7 +114,7 @@ class ZohoRequests {
                         'name' => $task->Name,
                         'projectID' => $task->ZohoProjectID
                     );
-                    $this->taskAndUsers[$task->ZohoTaskID] = $ownerIDs;
+                    $this->taskAndUsers[$task->ZohoTaskID] = $ownerIDs;                 
                 }
             }
             $page++;
@@ -126,7 +134,7 @@ class ZohoRequests {
         foreach($users as $u){
             foreach($u as $user){
                 if($user->role == 'admin'){
-                    
+                    $this->projectAndUsers[(string) $user->id] = array();
                     $userDB = User::where('zoho_id', $user->id)->first();
                     
                     if($userDB === null){
@@ -143,7 +151,7 @@ class ZohoRequests {
                     }
                 }         
             }
-        } 
+        }
     }
 
     /**
@@ -203,7 +211,7 @@ class ZohoRequests {
     }
 
     /**
-     * This function ties together the updates and tasks tables,
+     * This function ties together the users and tasks tables,
      * using the fact that they have a many to many relationship.
      */
     public function updateTaskUserTable(){
@@ -223,6 +231,33 @@ class ZohoRequests {
 
                     if(!$hasTask){
                         $task->users()->save($owner);
+                    }else{}
+                }  
+            }
+        }
+    }
+
+    /**
+     * This function ties together the users and projects tables,
+     * using the fact that they have a many to many relationship.
+     */
+    public function updateProjectUserTable(){
+        foreach($this->projectAndUsers as $ownerID => $projects){
+            
+            $owner = User::where('zoho_id', $ownerID)->first();
+            if($owner == null){
+                continue;
+            }
+            foreach($projects as $projectID){
+                $project = Project::where('zoho_id', $projectID)->first();
+
+                if($project == null){
+                    continue;
+                }else{
+                    $hasOwner = $project->users()->where('users.id', $ownerID)->exists();
+
+                    if(!$hasOwner){
+                        $owner->projects()->save($project);
                     }else{}
                 }  
             }

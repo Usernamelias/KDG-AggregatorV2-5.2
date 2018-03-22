@@ -35,8 +35,9 @@ class TimeEntryController extends Controller
     $aggregatedEntriesTableHeadline = "Today's Entries Aggregated by Project";
     $entryDate = $request->input('entryDate', null);
     $userZohoID = Auth::user()->zoho_id;
-    $allProjects = Project::whereHas('tasks', function($q){ $q->whereHas('users', function($p){
-                    $p->where('zoho_id', Auth::user()->zoho_id);});})->where('enabled', '!=', '0')->orderBy('name')->get();
+    
+    $allProjects = Project::whereHas('usersProjectsEnabled', function($p){
+      $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get(); 
 
     $activeProjects = Project::whereHas('tasks', function($q){ $q->whereHas('users', function($p){
                     $p->where('zoho_id', Auth::user()->zoho_id);});})->orderBy('name')->get();

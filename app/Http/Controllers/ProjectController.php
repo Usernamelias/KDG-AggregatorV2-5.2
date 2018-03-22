@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Project;
+use App\ProjectUser;
 use Auth;
 
 /**
@@ -25,16 +26,15 @@ class ProjectController extends Controller
 
         $searchTerm = strtolower($request->input('searchTerm', null));
 
-        $enabledProjects = Project::whereHas('tasks', function($q){ $q->whereHas('users', function($p){
-            $p->where('zoho_id', Auth::user()->zoho_id);});})->where('enabled', '!=', '0')->orderBy('name')->get(); 
+        $enabledProjects = Project::whereHas('usersProjectsEnabled', function($p){
+            $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get(); 
 
         $searchResults = Project::with(['tasks' => function($q){ $q->whereHas('users', function($p){
-                            $p->where('zoho_id', Auth::user()->zoho_id);});}])->where('name', 'LIKE', '%'.$searchTerm.'%')->orderBy('name')->get();
-        
-        $disabledProjects = Project::whereHas('tasks', function($q){ $q->whereHas('users', function($p){
-            $p->where('zoho_id', Auth::user()->zoho_id);});})->where('enabled', '!=', '1')->orderBy('name')->get(); 
+                            $p->where('zoho_id', Auth::user()->zoho_id);});}])->where('name', 'LIKE', '%'.$searchTerm.'%')->orderBy('name')->get(); 
 
-        
+        $disabledProjects = Project::whereHas('usersProjectsDisabled', function($p){
+            $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get(); 
+
         return view('pages.projects')->with([
             'enabledProjects' => $enabledProjects,
             'disabledProjects' => $disabledProjects,
@@ -49,22 +49,22 @@ class ProjectController extends Controller
      * @param Request
      */
     public function projectEnabledDisabled(Request $request){
-        $project = Project::find($request->projectID);
+        
+        $projectUser = ProjectUser::where('project_id', $request->projectID)->where('user_id', Auth::user()->id)->first();
 
         if($request->enabled == 'true'){
-            if($project->enabled == 1){}
+            if($projectUser->enabled == 1){}
             else{
-                $project->enabled = 1;
+                $projectUser->enabled = 1;
             }
         }else{
-            if($project->enabled == 0){}
+            if($projectUser->enabled == 0){}
             else{
-                $project->enabled = 0;
+                $projectUser->enabled = 0;
             }           
         }
 
-        $project->save();
-
+        $projectUser->save();
     }
 }
 

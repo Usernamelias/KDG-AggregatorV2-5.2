@@ -28,4 +28,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Task')->withTimestamps();
     }
+
+    public function projects()
+    {
+        return $this->belongsToMany('App\Project')->withPivot('enabled')->withTimestamps();
+    }
 }

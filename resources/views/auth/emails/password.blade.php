@@ -1,51 +1,3 @@
-<style media="screen" type="text/css">
-.emailParagraph{
-    font-family:Avenir,Helvetica,sans-serif;
-    box-sizing:border-box;
-    color:#3a3939;
-    font-size:1.1em;
-    line-height:1.5em;
-    margin-top:0;
-    text-align:left
-}
-.resetButton{
-    font-family:Avenir,Helvetica,sans-serif;
-    box-sizing:border-box;
-    border-radius:3px;
-    color:#fff;
-    display:inline-block;
-    text-decoration:none;
-    background-color:#43425D;
-    border-top:10px solid #43425D;
-    border-right:18px solid #43425D;
-    border-bottom:10px solid #43425D;
-    border-left:18px solid #43425D;
-    margin: 0 auto;
-}
-#aggregatorTitle{
-    color: #43425D;
-    font-family:Helvetica,sans-serif;
-    text-align: center;
-    padding: 10px;
-    background-color: #F0F0F7;
-}
-.kdgBody{
-    margin: 0 auto;
-    width: 50%;
-    padding: 10px; 
-}
-small{
-    text-align: center;
-    display: block;
-    color: #9A99AA;
-    padding: 10px;
-    background-color: #F0F0F7;
-}
-.wrapper {
-  display: flex;
-  justify-content: center;
-}
-</style>
 <h1 id="aggregatorTitle" style="color: #43425D;
     font-family:Helvetica,sans-serif;
     text-align: center;
@@ -61,7 +13,7 @@ small{
     font-size:1.1em;
     line-height:1.5em;
     margin-top:0;
-    text-align:left">Hello there,</p>
+    text-align:left">Hello,</p>
 
 <p style="font-family:Avenir,Helvetica,sans-serif;
     box-sizing:border-box;
