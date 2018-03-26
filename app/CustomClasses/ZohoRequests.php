@@ -30,17 +30,6 @@ class ZohoRequests {
 
         $this->zohoTasksViaKali();
 
-        $currentTasks = Task::all();
-
-        foreach($currentTasks as $currentTask){
-            $hasID = array_search($currentTask->zoho_id, $this->taskIDs);
-
-            if($hasID == FALSE){
-                $currentTask->users()->detach();
-                $currentTask->delete();
-            }
-        }
-
         foreach($this->allTasks as $t){
             
             $task = Task::where('zoho_id', $t['id'])->first();
@@ -221,19 +210,18 @@ class ZohoRequests {
             if($task == null){
                 continue;
             }
+            $ownerArray = array();
             foreach($owners as $ownerID){
-                $owner = User::where('zoho_id', $ownerID)->first();
-
-                if($owner == null){
-                    continue;
-                }else{
-                    $hasTask = $owner->tasks()->where('tasks.id', $taskID)->exists();
-
-                    if(!$hasTask){
-                        $task->users()->save($owner);
-                    }else{}
-                }  
+                $ownerArray[] = $ownerID;
             }
+            $owners = User::whereIn('zoho_id', $ownerArray)->select('id')->get();
+
+            $ownerIDs = array();
+            foreach($owners as $owner){
+                $ownerIDs[] = $owner->id;
+            }
+
+            $task->users()->sync($ownerIDs);  
         }
     }
 
@@ -248,19 +236,19 @@ class ZohoRequests {
             if($owner == null){
                 continue;
             }
+            $projectArray = array();
             foreach($projects as $projectID){
-                $project = Project::where('zoho_id', $projectID)->first();
-
-                if($project == null){
-                    continue;
-                }else{
-                    $hasOwner = $project->users()->where('users.id', $ownerID)->exists();
-
-                    if(!$hasOwner){
-                        $owner->projects()->save($project);
-                    }else{}
-                }  
+                $projectArray[] = $projectID;
             }
+
+            $projects = Project::whereIn('zoho_id', $projectArray)->select('id')->get();
+
+            $projectIDs = array();
+            foreach($projects as $project){
+                $projectIDs[] = $project->id;
+            }
+
+            $owner->projects()->sync($projectIDs);  
         }
     }
 

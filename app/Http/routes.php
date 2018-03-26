@@ -63,18 +63,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-// /*For debugging*/
-// if(App::environment('local')) {
+/*For debugging*/
+if(App::environment('local')) {
 
-//     Route::get('/drop', function() {
+    Route::get('/drop', function() {
 
-//         $db = Config::get('database.connections.mysql.database');
+        $db = Config::get('database.connections.mysql.database');
 
-//         DB::statement('DROP database '.$db);
-//         DB::statement('CREATE database '.$db);
+        DB::statement('DROP database '.$db);
+        DB::statement('CREATE database '.$db);
 
-//         return 'Dropped '.$db.'; created '.$db.'.';
-//     });
+        return 'Dropped '.$db.'; created '.$db.'.';
+    });
 
-// };
-// /*End "for debugging"*/
+};
+/*End "for debugging"*/
