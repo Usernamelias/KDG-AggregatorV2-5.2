@@ -66,7 +66,7 @@ class ZohoRequests {
 
         while(true){
          
-            $response = $client->request('GET', '?Completed=IS+NULL&Page='.$page);
+            $response = $client->request('GET', '?Completed=IS+NULL&Page='.$page.'&app_key='.urlencode(env('APP_KEY')));
             $tasksJSON = json_decode($response->getBody());
             
             if(empty($tasksJSON->Tasks)){

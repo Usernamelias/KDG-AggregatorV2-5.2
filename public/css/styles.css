@@ -350,6 +350,10 @@ td {
   border-bottom: 4px solid transparent !important;
 }
 
+.dropdown-menu>li>a:focus,.dropdown-menu>li>a:hover{
+  background-color:#43425D !important;
+}
+
 .dropdown-toggle:hover, .dropdown-toggle:focus, .dropdown-toggle:active, .dropdown-toggle:link {
   border-color: transparent !important;
 }

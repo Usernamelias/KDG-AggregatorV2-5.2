@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <link href="/css/styles.css" type='text/css' rel='stylesheet'>
+        <link rel="icon" type="image/png" href="/images/favicon.ico">
 
         @stack('head')
 
@@ -48,7 +49,7 @@
                                 <a href="#" class="dropdown-toggle" id="menuNameAndPic" data-toggle="dropdown" role="button" aria-expanded="false" >
                                     <i class="fas fa-user"></i>
                                     <span id="userName">{{ Auth::user()->name }}</span> <span class="caret caretUserName"></span>
-                                    <img src="/uploads/profile-pics/kdg_logo.jpg" id="menuProfilePic" alt="user photo"/>
+                                    <img src="/images/kdg_logo.jpg" id="menuProfilePic" alt="user photo"/>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
