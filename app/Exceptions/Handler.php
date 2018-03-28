@@ -8,6 +8,9 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\Debug\Exception\FlattenException;
 
 class Handler extends ExceptionHandler
 {
@@ -45,6 +48,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        $exception = FlattenException::create($e);
+        $statusCode = $exception->getStatusCode($exception);
+
+        if ($e instanceof ValidationException) {
+            return parent::render($request, $e);
+        }elseif ($e instanceof TokenMismatchException) {
+            return redirect('/login');
+        }elseif ($e instanceof FatalErrorException) {
+            return response()->view('errors.500');
+        }elseif (in_array($statusCode, array(403, 500, 503, 504, 505))) {
+            return response()->view('errors.'.$statusCode);
+        }else{
+            return parent::render($request, $e);
+        }
+
+        
     }
 }

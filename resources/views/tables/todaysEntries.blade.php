@@ -12,7 +12,7 @@
           </tr>
           @foreach($allEntries as $entry)
             <tr>
-              <td>{{ $entry['start_time'] }} - {{ $entry['end_time'] }}</td>
+              <td>@if($entry['start_time'] === null) @else {{ $entry['formatted_start_time'] }} - {{ $entry['formatted_end_time']  }} @endif</td>
               <td>{{ $entry['duration'] }}</td>
               <td>
               @if( $entry['billable'] === 1)

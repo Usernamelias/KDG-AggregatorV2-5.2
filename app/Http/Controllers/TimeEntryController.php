@@ -59,7 +59,7 @@ class TimeEntryController extends Controller
       $aggregatedEntriesTableHeadline = "Entries Aggregated by Project";      
     }
     
-    $allEntries = TimeEntry::whereDate('created_at', '=', $entryDate)->where('user_id', '=', Auth::user()->id)->get();   
+    $allEntries = TimeEntry::whereDate('created_at', '=', $entryDate)->where('user_id', '=', Auth::user()->id)->orderBy('start_time', 'DESC')->get();   
     $aggregatedEntries = TimeEntry::selectRaw('sum(time_entries.duration) as total, group_concat(time_entries.description separator "; ") as concatDescription, time_entries.project_name, time_entries.task, time_entries.billable')
     ->whereDate('created_at', '=', $entryDate)
     ->where('user_id', '=', Auth::user()->id)
@@ -70,12 +70,6 @@ class TimeEntryController extends Controller
 
     for($i = 0; $i < sizeof($allEntries); $i++){
       $durationTotal = $durationTotal + $allEntries[$i]['duration'];
-
-      if($allEntries[$i]['start_time'] === null){}
-      else{
-        $allEntries[$i]['start_time'] = Carbon::parse($allEntries[$i]['start_time'])->format('h:i A');
-        $allEntries[$i]['end_time'] = Carbon::parse($allEntries[$i]['end_time'])->format('h:i A');
-      }
     }
 
     for($i = 0; $i < sizeof($aggregatedEntries); $i++){
@@ -137,8 +131,8 @@ class TimeEntryController extends Controller
      * If none of these ifs apply, then include a validation rule for start_time.
      */
     if($request->start_time != null && $request->end_time != null && $request->duration == null){
-      $request->start_time = \Carbon\Carbon::createFromFormat('h:i A', $request->start_time);
-      $request->end_time = \Carbon\Carbon::createFromFormat('h:i A', $request->end_time);
+      $request->start_time = $request->start_time;
+      $request->end_time = $request->end_time;
       $rules['start_time'] = 'required_without:duration|before:end_time';
     }elseif($request->start_time != null && $request->end_time != null && $request->duration !== null){
       $rules['duration'] = 'one_or_the_other';
@@ -239,8 +233,8 @@ class TimeEntryController extends Controller
      * If none of these ifs apply, then include a validation rule for start_time.
      */
     if($request->start_time2 != null && $request->end_time2 != null && $request->duration2 == null){
-      $request->start_time2 = \Carbon\Carbon::createFromFormat('h:i A', $request->start_time2);
-      $request->end_time2 = \Carbon\Carbon::createFromFormat('h:i A', $request->end_time2);
+      $request->start_time2 = $request->start_time2;
+      $request->end_time2 = $request->end_time2;
       $rules['start_time2'] = 'required_without:duration2|before:end_time2';
     }elseif($request->start_time2 != null && $request->end_time2 != null && $request->duration2 !== null){
       $rules['duration2'] = 'one_or_the_other';
@@ -294,7 +288,7 @@ class TimeEntryController extends Controller
 
     $timeEntry->save();
 
-    return redirect('/work-done');
+    return redirect('/work-done')->withInput();
   }
 
   /**

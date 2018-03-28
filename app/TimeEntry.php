@@ -47,4 +47,13 @@ class TimeEntry extends Model
             $model->save();
         });
     }
+
+    public function getFormattedStartTimeAttribute(){
+        
+        return \Carbon\Carbon::parse($this->start_time)->format('h:i A');
+    }
+
+    public function getFormattedEndTimeAttribute(){
+        return \Carbon\Carbon::parse($this->end_time)->format('h:i A');
+    }
 }

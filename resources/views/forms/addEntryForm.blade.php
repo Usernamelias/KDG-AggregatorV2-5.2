@@ -67,12 +67,15 @@
 
     
     <div class="row startEndTime" id="startEndTime">
-      
+    
         <div class="form-group col-xs-6 {{ $errors->has('start_time') ? ' has-error' : '' }}">
           <label for="start_time">START TIME</label>
-          <div class="input-group clockpicker" data-placement="right" data-align="top" data-autoclose="true">
-            <i class="far fa-2x fa-clock clockIconForm start"></i>
-            <input type="text" name="start_time" class="time timepicker input-lg start" value="{{ old('start_time') }}" placeholder="9:00 AM">
+          <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+          <span class="input-group-addon">
+		          <span class="glyphicon glyphicon-time"></span>
+	          </span>
+            <input type="time" name="start_time" class="form-control time timepicker input-lg start" value="{{ old('start_time') }}" placeholder="9:00 AM">
+            
           </div>
           @if($errors->get('start_time'))
             <ul>
@@ -84,12 +87,14 @@
         </div>
       
 
-      
+  
       <div class="form-group col-xs-6 {{ $errors->has('end_time') ? ' has-error' : '' }}">
         <label for="end_time">END TIME</label>
         <div class="input-group clockpicker" data-placement="right" data-align="top" data-autoclose="true">
-          <i class="far fa-2x fa-clock clockIconForm end"></i>
-          <input type="text" name="end_time" class="time timepicker input-lg end" value="{{ old('end_time') }}" placeholder="5:30 PM">
+        <span class="input-group-addon">
+		          <span class="glyphicon glyphicon-time"></span>
+	          </span>
+          <input type="time" name="end_time" class="form-control time timepicker input-lg end" value="{{ old('end_time') }}" placeholder="5:30 PM">
         </div>
         @if($errors->get('end_time'))
           <ul>

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('.timepicker').mdtimepicker();
+    //$('.timepicker').mdtimepicker();
 
     $('.writeInTask').click(function() {
       var $parent = $(this).closest('form');

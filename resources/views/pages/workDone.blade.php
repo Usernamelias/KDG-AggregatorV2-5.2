@@ -83,6 +83,7 @@
           $parent.find('.taskSelectField select').val(oldValue);
         }
       }).trigger('change');
+
     });
   </script>
 <!-- End 'Task population for entry forms' --> 
