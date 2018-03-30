@@ -5,7 +5,7 @@
 
     <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
       <label for="description">DESCRIPTION OF WORK</label>
-      <textarea name="description" class="form-control input-lg description" rows="5" placeholder="Say what you worked on..." autofocus="autofocus">{{ old('description') }}</textarea>
+      <textarea name="description" class="form-control input-lg description" rows="5" placeholder="Describe your work." autofocus="autofocus">{{ old('description') }}</textarea>
       @if($errors->get('description'))
         <ul>
           @foreach($errors->get('description') as $error)
