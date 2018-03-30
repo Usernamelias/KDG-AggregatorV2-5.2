@@ -11,6 +11,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\Exception\FlattenException;
+use Session;
 
 class Handler extends ExceptionHandler
 {
@@ -54,15 +55,15 @@ class Handler extends ExceptionHandler
         if ($e instanceof ValidationException) {
             return parent::render($request, $e);
         }elseif ($e instanceof TokenMismatchException) {
+            Session::flash('messageRed', "Your session ended. Please log back in.");
             return redirect('/login');
         }elseif ($e instanceof FatalErrorException) {
             return response()->view('errors.500');
         }elseif (in_array($statusCode, array(403, 500, 503, 504, 505))) {
             return response()->view('errors.'.$statusCode);
         }else{
+            Session::flash('messageRed', "Yourog back in.");
             return parent::render($request, $e);
         }
-
-        
     }
 }

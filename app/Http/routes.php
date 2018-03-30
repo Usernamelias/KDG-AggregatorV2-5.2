@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 		Route::post('/projects', 'ProjectController@projectEnabledDisabled');
 
+		Route::get('/projects/update-tasks', 'ProjectController@runTasksUpdate');
+
 		Route::post('/work-done', 'TimeEntryController@sync');
 	});
 

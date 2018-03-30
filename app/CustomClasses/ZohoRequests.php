@@ -281,4 +281,129 @@ class ZohoRequests {
           }
         }
     }
+
+    /**
+     * This function updates tasks per project specified.
+     * @param integer
+     */
+    public function updateTasksPerProject($projectID){
+        ini_set('max_execution_time', 100000);
+        $user = Auth::user();
+        $users = User::all();
+        $client = new Client(['base_uri' => env('BASE_URI')]);
+        $indexT = 1;
+        $indexS = 1;
+
+        $this->updateUsersTable();
+
+        while(true){
+            try{
+                $response = $client->request('GET', 'portal/kyledavidgroup/projects/'.$projectID.'/tasks/?AUTHTOKEN='.env('AUTH_TOKEN').'&RESULT=TRUE&index='.$indexT);
+            }catch(\Exception $e){
+                break;
+            }
+            
+            $tasksJSON = json_decode($response->getBody());
+
+            if($tasksJSON == null){
+                break;
+            }
+            foreach($tasksJSON as $t){
+                if($t == null){
+                    break;
+                }
+                foreach($t as $task){
+                    
+                    if($task == null){
+                        break;
+                    }
+                    if($task->status->name === "Open"){
+                        
+                        $ownerIDs = array();
+
+                        foreach($task->details->owners as $owner){
+                            if(property_exists($owner, 'id')){                                           
+                                array_push($ownerIDs, $owner->id);
+                                foreach($users as $user){
+                                    if($user->zoho_id == $owner->id){
+                                        array_push($this->projectAndUsers[$owner->id], $task->id_string);
+                                        $this->projectAndUsers[$owner->id] = array_unique($this->projectAndUsers[$owner->id]);    
+                                    }
+                                }
+                            }    
+                        }
+                        
+                        $this->allTasks[] = array(
+                            'id' => $task->id_string,
+                            'name' => $task->name,
+                            'projectID' => $projectID,
+                            'ownerIDs' => $ownerIDs,
+                        );
+                        
+                        $this->taskAndUsers[$task->id_string] = $ownerIDs;  
+
+                        if($task->subtasks === true){
+                            
+                            $subtasksURL = $task->link->subtask->url;
+
+                            while(true){
+                               
+                                try{
+                                    $response = $client->request('GET', $subtasksURL . '?AUTHTOKEN='.$user->authtoken.'&RESULT=TRUE&index='.$indexS);
+                                }catch(\Exception $e){
+                                    break;
+                                }
+                                
+                                $subtasksJSON = json_decode($response->getBody());
+
+                                if($subtasksJSON == null){
+                                    break;
+                                }
+
+                                foreach($subtasksJSON as $s){
+                                    if($s == null){
+                                        break;
+                                    }
+                                    foreach($s as $subtask){
+                                        if($subtask == null){
+                                            break;
+                                        }
+
+                                        if($subtask->status->name === "Open"){
+                                            $ownerIDs = array();
+                                            
+                                            foreach($subtask->details->owners as $owner){
+                                                if(property_exists($owner, 'id')){                                           
+                                                    array_push($ownerIDs, $owner->id);
+                                                    foreach($users as $user){
+                                                        if($user->zoho_id == $owner->id){
+                                                            array_push($this->projectAndUsers[$owner->id], $task->id_string);
+                                                            $this->projectAndUsers[$owner->id] = array_unique($this->projectAndUsers[$owner->id]);    
+                                                        }
+                                                    }
+                                                }
+                                                                    
+                                            }
+
+                                            $this->allTasks[] = array(
+                                                'id' => $subtask->id_string,
+                                                'name' => $subtask->name,
+                                                'projectID' => $projectID,
+                                                'ownerIDs' => $ownerIDs,
+                                            );
+                                           
+                                            $this->taskAndUsers[$subtask->id_string] = $ownerIDs;  
+                                        }
+                                    }
+                                }
+                                $indexS = $indexS + 100;
+                            }
+                        }
+                    }
+                }
+            }
+            $indexT = $indexT + 100;
+        }   
+        $this->updateTaskUserTable();        
+    }
 }

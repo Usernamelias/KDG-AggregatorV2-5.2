@@ -606,6 +606,30 @@ select, option{
 .panel-default{
   margin-top: 50px;
 }
+
+.updateTasksButton{
+  margin-left: 2px; 
+}
+.activeTable .fa-spinner{
+  font-size: 2em;
+  display: none;
+  margin: 0 auto;
+}
+.activeTable .fa-check{
+  font-size: 2em;
+  color: green; 
+  display: none;
+}
+
+.activeTable i {
+  text-align:center;
+  width: 100%;
+}
+
+.messageRed {
+  text-align: center;
+  font-size: 1.2em;
+}
 /*Toggle Switch for Projects. Source: https://www.w3schools.com/howto/howto_css_switch.asp*/
 
 .switch {

@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Project;
 use App\ProjectUser;
 use Auth;
+use App\CustomClasses\ZohoRequests;
 
 /**
  * Class for handling the projects page.
@@ -65,6 +66,12 @@ class ProjectController extends Controller
         }
 
         $projectUser->save();
+    }
+
+    public function runTasksUpdate(Request $request){
+        $zohoRequest = new ZohoRequests();
+
+        $zohoRequest->updateTasksPerProject($request->projectID);
     }
 }
 

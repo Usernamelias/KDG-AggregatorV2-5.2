@@ -72,6 +72,10 @@
             </div>
         </nav>
 
+        @if(Session::get('messageRed') != null)
+            <div class='messageRed alert alert-danger'>{{ Session::get('messageRed') }}</div>
+        @endif
+
         @yield('content')
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
