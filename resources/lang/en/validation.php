@@ -109,6 +109,7 @@ return [
     */
 
     'attributes' => [],
-    'one_or_the_other' => 'Must not fill in both duration and start/end time.'
+    'one_or_the_other' => 'Must not fill in both duration and start/end time.',
+    //'over24' => 'You are over 24 hours for the day.',
 
 ];

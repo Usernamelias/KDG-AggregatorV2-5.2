@@ -28,8 +28,8 @@ class SessionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('gae_session', function($app){
-            return new AppEngineStorageSessionHandler($app);
-        });
+        // $this->app->bind('gae_session', function($app){
+        //     return new AppEngineStorageSessionHandler($app);
+        // });
     }
 }

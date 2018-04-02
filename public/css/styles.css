@@ -68,7 +68,7 @@ a.active:link, a.active:visited, a.active:active, a.active:hover {
 
 .tables {
   background-color: #F0F0F7;
-  
+
 
   display: block;
   padding-left: 40px;
@@ -345,7 +345,7 @@ td {
   color: #A3A0FB !important;
 }
 
-.dropdown-menu li a.active:link, .dropdown-menu li a.active:visited, 
+.dropdown-menu li a.active:link, .dropdown-menu li a.active:visited,
 .dropdown-menu li a.active:active, .dropdown-menu li a.active:hover {
   border-bottom: 4px solid transparent !important;
 }
@@ -384,7 +384,7 @@ nav ul li a:focus, nav ul li a:active {
 }
 
 .has-error, ul li.error{
-  color: #A94442; 
+  color: #A94442;
 }
 
 .has-error input, .has-error textarea, .has-error select{
@@ -608,7 +608,7 @@ select, option{
 }
 
 .updateTasksButton{
-  margin-left: 2px; 
+  margin-left: 2px;
 }
 .activeTable .fa-spinner{
   font-size: 2em;
@@ -617,7 +617,7 @@ select, option{
 }
 .activeTable .fa-check{
   font-size: 2em;
-  color: green; 
+  color: green;
   display: none;
 }
 
@@ -697,7 +697,7 @@ input:checked+.slider:before {
   font-weight: bold;
 }
 #datepicker{
-  width:180px; 
+  width:180px;
 }
 #datepicker > span:hover{
   cursor: pointer;
@@ -713,11 +713,11 @@ input:checked+.slider:before {
     padding-bottom: 20px !important;
     padding-top: 20px !important;
   }
-  
+
   #menuProfilePic{
     display: none;
   }
- 
+
   .fa-user{
     display: inline-block;
   }
@@ -750,11 +750,11 @@ input:checked+.slider:before {
   .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a {
     background-color: #3C3B53 !important;
   }
-  
+
   .navbar-nav ul {
     background-color: #3C3B53 !important;
   }
-  
+
   .navbar-nav li a {
     margin-right: 0;
   }

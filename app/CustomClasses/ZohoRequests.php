@@ -11,7 +11,7 @@ use Auth;
 
 /**
  * This class is for retrieving Zoho data.
- * 
+ *
  * @author Elias Falconi
  */
 class ZohoRequests {
@@ -29,9 +29,10 @@ class ZohoRequests {
     public function updateTasksTable(){
 
         $this->zohoTasksViaKali();
-
+        $everyTask = Task::select('zoho_id')->get();
         foreach($this->allTasks as $t){
-            
+            array_push($this->taskIDs, $t['id']);
+
             $task = Task::where('zoho_id', $t['id'])->first();
             $project_id = Project::where('zoho_id', $t['projectID'])->pluck('id')->first();
             if($project_id === null){
@@ -53,6 +54,15 @@ class ZohoRequests {
                 $task->save();
             }
         }
+
+        foreach($everyTask as $thisTask){
+          if(!in_array($thisTask->zoho_id, $this->taskIDs)){
+            $thisTask->users()->detach();
+            $thisTask->delete();
+          }else{
+
+          }
+        }
     }
 
     /**
@@ -65,10 +75,10 @@ class ZohoRequests {
         $users = User::all();
 
         while(true){
-         
+
             $response = $client->request('GET', '?Completed=IS+NULL&Page='.$page.'&app_key='.urlencode(env('APP_KEY')));
             $tasksJSON = json_decode($response->getBody());
-            
+
             if(empty($tasksJSON->Tasks)){
                 break;
             }else{}
@@ -83,17 +93,17 @@ class ZohoRequests {
                 }
 
                 foreach($t as $task){
-                        
+
                     $ownerIDs = array();
 
                     foreach($task->Owners as $owner){
-                        if(property_exists($owner, 'ZohoUserID')){                                           
+                        if(property_exists($owner, 'ZohoUserID')){
                             array_push($ownerIDs, $owner->ZohoUserID);
 
                             foreach($users as $user){
                                 if($user->zoho_id == $owner->ZohoUserID){
                                     array_push($this->projectAndUsers[$owner->ZohoUserID], $task->ZohoProjectID);
-                                    $this->projectAndUsers[$owner->ZohoUserID] = array_unique($this->projectAndUsers[$owner->ZohoUserID]);    
+                                    $this->projectAndUsers[$owner->ZohoUserID] = array_unique($this->projectAndUsers[$owner->ZohoUserID]);
                                 }
                             }
                         }
@@ -103,7 +113,7 @@ class ZohoRequests {
                         'name' => $task->Name,
                         'projectID' => $task->ZohoProjectID
                     );
-                    $this->taskAndUsers[$task->ZohoTaskID] = $ownerIDs;                 
+                    $this->taskAndUsers[$task->ZohoTaskID] = $ownerIDs;
                 }
             }
             $page++;
@@ -115,7 +125,7 @@ class ZohoRequests {
      * all users. It then updates the database.
      */
     public function updateUsersTable(){
-       
+
         $client = new Client(['base_uri' => env('BASE_URI')]);
         $response = $client->request('GET', 'portal/kyledavidgroup/users/?AUTHTOKEN='.env('AUTH_TOKEN').'&RESULT=TRUE');
         $users = json_decode($response->getBody());
@@ -125,7 +135,7 @@ class ZohoRequests {
                 if($user->role == 'admin'){
                     $this->projectAndUsers[(string) $user->id] = array();
                     $userDB = User::where('zoho_id', $user->id)->first();
-                    
+
                     if($userDB === null){
                         $newUser = new User();
                         $newUser->email = $user->email;
@@ -138,7 +148,7 @@ class ZohoRequests {
                         $userDB->email = $user->email;
                         $userDB->save();
                     }
-                }         
+                }
             }
         }
     }
@@ -174,28 +184,28 @@ class ZohoRequests {
                         $projects[$i]['name'] = $p->name;
                         $i++;
                     }
-                    
+
                 }
             }
             $index = $index + 100;
         }
-        
+
         for($j = 0; $j < $i; $j++){
-            
+
             $project = Project::where('zoho_id', $projects[$j]['zoho_id'])->first();
 
-            if($project === null){   
+            if($project === null){
                 $newProject = new Project();
                 $newProject->zoho_id = $projects[$j]['zoho_id'];
                 $newProject->name = $projects[$j]['name'];
 
                 $newProject->save();
-            }else{    
+            }else{
                 $project->name = $projects[$j]['name'];
 
                 $project->save();
             }
-            
+
         }
     }
 
@@ -205,7 +215,7 @@ class ZohoRequests {
      */
     public function updateTaskUserTable(){
         foreach($this->taskAndUsers as $taskID => $owners){
-            
+
             $task = Task::where('zoho_id', $taskID)->first();
             if($task == null){
                 continue;
@@ -221,7 +231,7 @@ class ZohoRequests {
                 $ownerIDs[] = $owner->id;
             }
 
-            $task->users()->sync($ownerIDs);  
+            $task->users()->sync($ownerIDs);
         }
     }
 
@@ -231,7 +241,7 @@ class ZohoRequests {
      */
     public function updateProjectUserTable(){
         foreach($this->projectAndUsers as $ownerID => $projects){
-            
+
             $owner = User::where('zoho_id', $ownerID)->first();
             if($owner == null){
                 continue;
@@ -248,7 +258,7 @@ class ZohoRequests {
                 $projectIDs[] = $project->id;
             }
 
-            $owner->projects()->sync($projectIDs);  
+            $owner->projects()->sync($projectIDs);
         }
     }
 
@@ -259,7 +269,7 @@ class ZohoRequests {
         $authToken = Auth::user()->authtoken;
         $client = new Client(['base_uri' => env('BASE_URI')]);
         $urlEnd = 'portal/kyledavidgroup/projects/'.$projectID.'/tasks'.'/'.$taskID.'/logs'.'/';
-       
+
         $response = $client->request('POST', $urlEnd, [
           'form_params' => [
                   'AUTHTOKEN' => $authToken,
@@ -270,12 +280,12 @@ class ZohoRequests {
                   'notes' => $description,
           ]
         ]);
-    
+
         $code = $response->getStatusCode();
-    
+
         if($code == 201){
           $timeEntries = TimeEntry::where('project_name', 'LIKE', '%'.$projectName.'%')->where('task', 'LIKE', '%'.$taskName.'%')->get();
-    
+
           foreach($timeEntries as $timeEntry){
             $timeEntry->delete();
           }
@@ -302,7 +312,7 @@ class ZohoRequests {
             }catch(\Exception $e){
                 break;
             }
-            
+
             $tasksJSON = json_decode($response->getBody());
 
             if($tasksJSON == null){
@@ -313,47 +323,47 @@ class ZohoRequests {
                     break;
                 }
                 foreach($t as $task){
-                    
+
                     if($task == null){
                         break;
                     }
                     if($task->status->name === "Open"){
-                        
+
                         $ownerIDs = array();
 
                         foreach($task->details->owners as $owner){
-                            if(property_exists($owner, 'id')){                                           
+                            if(property_exists($owner, 'id')){
                                 array_push($ownerIDs, $owner->id);
                                 foreach($users as $user){
                                     if($user->zoho_id == $owner->id){
                                         array_push($this->projectAndUsers[$owner->id], $task->id_string);
-                                        $this->projectAndUsers[$owner->id] = array_unique($this->projectAndUsers[$owner->id]);    
+                                        $this->projectAndUsers[$owner->id] = array_unique($this->projectAndUsers[$owner->id]);
                                     }
                                 }
-                            }    
+                            }
                         }
-                        
+
                         $this->allTasks[] = array(
                             'id' => $task->id_string,
                             'name' => $task->name,
                             'projectID' => $projectID,
                             'ownerIDs' => $ownerIDs,
                         );
-                        
-                        $this->taskAndUsers[$task->id_string] = $ownerIDs;  
+
+                        $this->taskAndUsers[$task->id_string] = $ownerIDs;
 
                         if($task->subtasks === true){
-                            
+
                             $subtasksURL = $task->link->subtask->url;
 
                             while(true){
-                               
+
                                 try{
                                     $response = $client->request('GET', $subtasksURL . '?AUTHTOKEN='.$user->authtoken.'&RESULT=TRUE&index='.$indexS);
                                 }catch(\Exception $e){
                                     break;
                                 }
-                                
+
                                 $subtasksJSON = json_decode($response->getBody());
 
                                 if($subtasksJSON == null){
@@ -371,18 +381,18 @@ class ZohoRequests {
 
                                         if($subtask->status->name === "Open"){
                                             $ownerIDs = array();
-                                            
+
                                             foreach($subtask->details->owners as $owner){
-                                                if(property_exists($owner, 'id')){                                           
+                                                if(property_exists($owner, 'id')){
                                                     array_push($ownerIDs, $owner->id);
                                                     foreach($users as $user){
                                                         if($user->zoho_id == $owner->id){
                                                             array_push($this->projectAndUsers[$owner->id], $task->id_string);
-                                                            $this->projectAndUsers[$owner->id] = array_unique($this->projectAndUsers[$owner->id]);    
+                                                            $this->projectAndUsers[$owner->id] = array_unique($this->projectAndUsers[$owner->id]);
                                                         }
                                                     }
                                                 }
-                                                                    
+
                                             }
 
                                             $this->allTasks[] = array(
@@ -391,8 +401,8 @@ class ZohoRequests {
                                                 'projectID' => $projectID,
                                                 'ownerIDs' => $ownerIDs,
                                             );
-                                           
-                                            $this->taskAndUsers[$subtask->id_string] = $ownerIDs;  
+
+                                            $this->taskAndUsers[$subtask->id_string] = $ownerIDs;
                                         }
                                     }
                                 }
@@ -403,7 +413,7 @@ class ZohoRequests {
                 }
             }
             $indexT = $indexT + 100;
-        }   
-        $this->updateTaskUserTable();        
+        }
+        $this->updateTaskUserTable();
     }
 }

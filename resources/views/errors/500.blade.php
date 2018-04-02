@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('title')
-    404 Error | {{ env('APP_NAME') }}
+    500 Error | {{ env('APP_NAME') }}
 @endsection
 
 @section('content')

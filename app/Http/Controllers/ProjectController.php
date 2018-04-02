@@ -10,10 +10,11 @@ use App\Project;
 use App\ProjectUser;
 use Auth;
 use App\CustomClasses\ZohoRequests;
+use App\Http\Controllers\UtilityController;
 
 /**
  * Class for handling the projects page.
- * 
+ *
  * @author Elias Falconi
  */
 class ProjectController extends Controller
@@ -24,17 +25,18 @@ class ProjectController extends Controller
      * @return view
      */
     public function showProjectsPage(Request $request){
-
+        UtilityController::startSession();
+        
         $searchTerm = strtolower($request->input('searchTerm', null));
 
         $enabledProjects = Project::whereHas('usersProjectsEnabled', function($p){
-            $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get(); 
+            $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get();
 
         $searchResults = Project::with(['tasks' => function($q){ $q->whereHas('users', function($p){
-                            $p->where('zoho_id', Auth::user()->zoho_id);});}])->where('name', 'LIKE', '%'.$searchTerm.'%')->orderBy('name')->get(); 
+                            $p->where('zoho_id', Auth::user()->zoho_id);});}])->where('name', 'LIKE', '%'.$searchTerm.'%')->orderBy('name')->get();
 
         $disabledProjects = Project::whereHas('usersProjectsDisabled', function($p){
-            $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get(); 
+            $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get();
 
         return view('pages.projects')->with([
             'enabledProjects' => $enabledProjects,
@@ -42,7 +44,7 @@ class ProjectController extends Controller
             'searchResults' => $searchResults,
             'searchTerm' => $searchTerm,
             'bodyClass' => 'projectsBody'
-        ]);    
+        ]);
     }
 
     /**
@@ -50,7 +52,7 @@ class ProjectController extends Controller
      * @param Request
      */
     public function projectEnabledDisabled(Request $request){
-        
+
         $projectUser = ProjectUser::where('project_id', $request->projectID)->where('user_id', Auth::user()->id)->first();
 
         if($request->enabled == 'true'){
@@ -62,7 +64,7 @@ class ProjectController extends Controller
             if($projectUser->enabled == 0){}
             else{
                 $projectUser->enabled = 0;
-            }           
+            }
         }
 
         $projectUser->save();
@@ -74,4 +76,3 @@ class ProjectController extends Controller
         $zohoRequest->updateTasksPerProject($request->projectID);
     }
 }
-

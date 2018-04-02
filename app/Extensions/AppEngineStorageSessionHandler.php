@@ -2,11 +2,11 @@
 
 namespace App\Extensions;
 
-class AppEngineStorageSessionHandler implements SessionHandlerInterface{
+class AppEngineStorageSessionHandler implements \SessionHandlerInterface{
 	private $savePath = '';
 
 	public function open($savePath,$sessionName){
-		$this->savePath = 'https://kdg-aggregator.appspot.com/';
+		$this->savePath = 'http://kdgaggregator.loc';
 		if(!is_dir($this->savePath)){
 			mkdir($this->savePath,0777);
 		}

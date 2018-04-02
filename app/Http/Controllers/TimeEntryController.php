@@ -11,7 +11,6 @@ use App\TimeEntry;
 use App\Project;
 use App\Task;
 use Carbon\Carbon;
-//use App\Rules\OneOrTheOther;
 use App\Http\Controllers\UtilityController;
 use App\CustomClasses\ZohoRequests;
 use GuzzleHttp\Client;
@@ -30,14 +29,15 @@ class TimeEntryController extends Controller
    * @return view
    */
   public function showWorkDonePage(Request $request){
+    UtilityController::startSession();
 
     $singleEntriesTableHeadline = "Today's Entries as Entered";
     $aggregatedEntriesTableHeadline = "Today's Entries Aggregated by Project";
     $entryDate = $request->input('entryDate', null);
     $userZohoID = Auth::user()->zoho_id;
-    
+
     $allProjects = Project::whereHas('usersProjectsEnabled', function($p){
-      $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get(); 
+      $p->where('zoho_id', Auth::user()->zoho_id);})->orderBy('name')->get();
 
     $activeProjects = Project::whereHas('tasks', function($q){ $q->whereHas('users', function($p){
                     $p->where('zoho_id', Auth::user()->zoho_id);});})->orderBy('name')->get();
@@ -54,18 +54,18 @@ class TimeEntryController extends Controller
         $entryDate = Carbon::now('America/New_York')->format('Y-m-d');
       }
     }else{
-      $entryDate = Carbon::createFromFormat('m-d-Y', $entryDate)->format('Y-m-d');  
+      $entryDate = Carbon::createFromFormat('m-d-Y', $entryDate)->format('Y-m-d');
       $singleEntriesTableHeadline = "Entries Entered on ".$request->entryDate;
-      $aggregatedEntriesTableHeadline = "Entries Aggregated by Project";      
+      $aggregatedEntriesTableHeadline = "Entries Aggregated by Project";
     }
-    
-    $allEntries = TimeEntry::whereDate('created_at', '=', $entryDate)->where('user_id', '=', Auth::user()->id)->orderBy('start_time', 'DESC')->get();   
+
+    $allEntries = TimeEntry::whereDate('created_at', '=', $entryDate)->where('user_id', '=', Auth::user()->id)->orderBy('start_time', 'DESC')->get();
     $aggregatedEntries = TimeEntry::selectRaw('sum(time_entries.duration) as total, group_concat(time_entries.description separator "; ") as concatDescription, time_entries.project_name, time_entries.task, time_entries.billable')
     ->whereDate('created_at', '=', $entryDate)
     ->where('user_id', '=', Auth::user()->id)
     ->groupBy('time_entries.project_name', 'time_entries.task', 'time_entries.billable')
     ->get();
-    
+
     $entryDate = Carbon::createFromFormat('Y-m-d', $entryDate)->format('m-d-Y');
 
     for($i = 0; $i < sizeof($allEntries); $i++){
@@ -95,7 +95,7 @@ class TimeEntryController extends Controller
       'aggregatedEntriesTableHeadline' => $aggregatedEntriesTableHeadline,
       'activeProjects' => $activeProjects,
       'entryDate' => $entryDate
-    ]);  
+    ]);
   }
 
   /**
@@ -106,6 +106,8 @@ class TimeEntryController extends Controller
   public function saveTimeEntry(Request $request){
     $this->setRequest($request);
     $userID = Auth::user()->id;
+    $total = 0;
+    $totalWithCurrentEntry = 0;
     //Establishing rules for validation
     $rules = [
       'project_name' => 'required|max:75',
@@ -293,7 +295,7 @@ class TimeEntryController extends Controller
 
   /**
    * Method for syncing time entries.
-   * 
+   *
    * @param Request object
    * @return Response only for debugging purposes.
    */
@@ -302,11 +304,11 @@ class TimeEntryController extends Controller
     $date = $request->entryDate;
     $userID = auth()->user()->zoho_id;
     $zohoPost = new ZohoRequests();
-    
+
     if(sizeof($r) == 3){
-      foreach($r['aggregatedEntries'] as $request){       
+      foreach($r['aggregatedEntries'] as $request){
         $projects = Project::where('name', 'LIKE', '%'.$request['project_name'].'%')->with('tasks')->get();
-      
+
         if($request['billable'] == 1){
           $billable = "Billable";
         }else{
@@ -327,7 +329,7 @@ class TimeEntryController extends Controller
         }
         $total = $request['total'];
         $description = $request['concatDescription'];
-        
+
         $zohoPost->zohoPost($date, $userID, $billable, $total, $description, $projectID, $taskID, $projectName, $taskName);
 
       }
@@ -355,7 +357,7 @@ class TimeEntryController extends Controller
 
       $total = $request->total;
       $description = $request->concatDescription;
-        
+
       $zohoPost->zohoPost($date, $userID, $billable, $total, $description, $projectID, $taskID, $projectName, $taskName);
 
     }
@@ -370,4 +372,3 @@ class TimeEntryController extends Controller
     $this->request = $request;
   }
 }
-

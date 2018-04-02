@@ -65,9 +65,9 @@
       <span class="selectTask writeins" id="selectTask">Select Task</span>
     </div>
 
-    
+
     <div class="row startEndTime" id="startEndTime">
-    
+
         <div class="form-group col-xs-6 {{ $errors->has('start_time') ? ' has-error' : '' }}">
           <label for="start_time">START TIME</label>
           <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
@@ -75,7 +75,7 @@
 		          <span class="glyphicon glyphicon-time"></span>
 	          </span>
             <input type="time" name="start_time" class="form-control time timepicker input-lg start" value="{{ old('start_time') }}" placeholder="9:00 AM">
-            
+
           </div>
           @if($errors->get('start_time'))
             <ul>
@@ -85,9 +85,9 @@
             </ul>
           @endif
         </div>
-      
 
-  
+
+
       <div class="form-group col-xs-6 {{ $errors->has('end_time') ? ' has-error' : '' }}">
         <label for="end_time">END TIME</label>
         <div class="input-group clockpicker" data-placement="right" data-align="top" data-autoclose="true">
@@ -105,10 +105,10 @@
         @endif
       </div>
     </div>
-        
+
     <div class="form-group {{ $errors->has('duration') ? ' has-error' : '' }} durationTextField" id="durationTextField">
-      <label for="duration">DURATION</label>
-      <input type="text" id="duration" class="form-control input-lg duration" name="duration" placeholder="Enter duration."  value='{{ old('duration') }}'>        
+      <label for="duration">DURATION</label><span> (Acceptable formats: 0:89, 1:29, :89, 89) </span>
+      <input type="text" id="duration" class="form-control input-lg duration" name="duration" placeholder="Enter duration."  value='{{ old('duration') }}'>
     </div>
     @if($errors->get('duration'))
       <ul>
@@ -117,13 +117,13 @@
         @endforeach
       </ul>
     @endif
-            
+
     <div class="enterWriteInOption">
     <button type="button" class="clearTimes" id="clearTimes">Clear times</button>
       <span class="enterDuration writeins" id="enterDuration">Enter duration instead</span>
       <span class="enterStartEndTime writeins" id="enterStartEndTime">Switch back to start and end time</span>
     </div>
-  
+
     <div class="row">
       <div class="form-group col-sm-6 form-group {{ $errors->has('billable') ? ' has-error' : '' }}">
         <input type="radio" id="billable" name="billable" class="billable" value="1" {{ old('billable')=="1" ? 'checked='.'"'.'checked'.'"' : '' }}>
@@ -135,7 +135,7 @@
         <label for="nonbillable">Non-Billable Work</label>
       </div>
     </div>
-    
+
     @if($errors->get('billable'))
       <ul>
         @foreach($errors->get('billable') as $error)
