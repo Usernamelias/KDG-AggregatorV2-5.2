@@ -26,6 +26,7 @@
         data-aggregated-billable='{{ $aggregatedEntry["billable"] }}'
         data-aggregated='{{ $aggregatedEntry }}'
         data-entry-date='{{ $entryDate }}'
+        data-user-id='{{ $aggregatedEntry["user_id"] }}'
         ><i class="fas fa-sync"></i>
         <span>SYNC</span></button></td>
       </tr>
@@ -68,6 +69,8 @@
           var concatDescription = $(this).data('aggregated-description');
           var billable = $(this).data('aggregated-billable');
           var entryDate = $(this).data('entry-date');
+          var userID = $(this).data('user-id');
+
           var CSRF_TOKEN = '{{csrf_token()}}';
 
           $.ajax({
@@ -88,7 +91,15 @@
               $("i").removeClass("fa-spin");
 
               $('button[data-sync="' + project_name + ' ' + task +'"]').prop("disabled",true);
-              $('button[data-sync="' + project_name + ' ' + task +'"]').addClass("disabled_button");         
+              $('button[data-sync="' + project_name + ' ' + task +'"]').addClass("disabled_button");
+
+              $('i[data-edit-ptu-id="' + project_name + ' ' + task + ' ' + userID+'"]').prop("disabled",true);
+              $('i[data-edit-ptu-id="' + project_name + ' ' + task + ' ' + userID+'"]').addClass("disabled_button");
+
+              $('i[data-delete-ptu-id="' + project_name + ' ' + task + ' ' + userID+'"]').prop("disabled",true);
+              $('i[data-delete-ptu-id="' + project_name + ' ' + task + ' ' + userID+'"]').addClass("disabled_button");
+
+              $('tr[data-tr-ptu-id="' + project_name + ' ' + task + ' ' + userID+'"]').css("text-decoration", "line-through");
 
             },
             failure: function(data){
@@ -127,6 +138,10 @@
 
               $('[data-sync]').prop("disabled",true);
               $('[data-sync]').addClass("disabled_button");
+
+              window.setTimeout(function(){
+                  window.location.href = window.location.href;
+              },0);
 
             },
             failure: function(data){

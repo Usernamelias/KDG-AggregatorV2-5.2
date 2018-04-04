@@ -11,12 +11,27 @@
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <link href="/css/styles.css" type='text/css' rel='stylesheet'>
         <link rel="icon" type="image/png" href="/images/favicon.ico">
+        <noscript>
+          <style>
+            #js{
+              display: none;
+            }
+            #noJS{
+              display: block;
+              text-align: center;
+              font-weight: bold;
+              font-size: 1.3em;
+              margin-top: 4em;
+            }
 
+          </style>
+        </noscript>
         @stack('head')
 
     </head>
     <body class="{{ $bodyClass or 'noClass' }}">
-
+      <div id="noJS">This site requires JavaScript. Please enable it in your browser settings.</div>
+      <div id="js">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container-fluid nav-container">
                 <div class="navbar-header">
@@ -86,9 +101,9 @@
                 window.setTimeout(function(){
                     window.location.href = window.location.href;
                 },3600000);
-            }); 
+            });
         </script>
         @stack('body')
-
+      </div>
     </body>
 </html>

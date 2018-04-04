@@ -12,7 +12,7 @@ use Auth;
 
 /**
  * Class for handling auth tokens.
- * 
+ *
  * @author Elias Falconi
  */
 class AuthTokenController extends Controller
@@ -36,11 +36,11 @@ class AuthTokenController extends Controller
         try{
             $response = $client->request('GET', 'portal/kyledavidgroup/users/?AUTHTOKEN='.$authtoken.'&RESULT=TRUE');
         }catch(Exception $e){
-            return response()->json(['error'=> 'Error!']); 
+            return response()->json(['error'=> 'Error!']);
         }
-            
+
         $code = $response->getStatusCode();
-    
+    dump($code);
         if($code === 200){
             $user = User::find(Auth::user()->id);
             $user->authtoken = $authtoken;
@@ -49,8 +49,7 @@ class AuthTokenController extends Controller
             return response()->json(['success'=> 'Success!']);
         }else{
             throw new Exception("Something bad happened");
-            return response()->json(['error'=> 'Error!']); 
-        }       
+            return response()->json(['error'=> 'Error!']);
+        }
     }
 }
-

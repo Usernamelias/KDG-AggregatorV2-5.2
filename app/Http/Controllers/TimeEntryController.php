@@ -60,7 +60,7 @@ class TimeEntryController extends Controller
     }
 
     $allEntries = TimeEntry::whereDate('created_at', '=', $entryDate)->where('user_id', '=', Auth::user()->id)->orderBy('start_time', 'DESC')->get();
-    $aggregatedEntries = TimeEntry::selectRaw('sum(time_entries.duration) as total, group_concat(time_entries.description separator "; ") as concatDescription, time_entries.project_name, time_entries.task, time_entries.billable')
+    $aggregatedEntries = TimeEntry::selectRaw('sum(time_entries.duration) as total, group_concat(time_entries.description separator "; ") as concatDescription, time_entries.project_name, time_entries.task, time_entries.billable, time_entries.user_id')
     ->whereDate('created_at', '=', $entryDate)
     ->where('user_id', '=', Auth::user()->id)
     ->groupBy('time_entries.project_name', 'time_entries.task', 'time_entries.billable')

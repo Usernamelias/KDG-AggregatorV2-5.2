@@ -1,7 +1,9 @@
 nav {
   background-color: #43425D !important;
 }
-
+#noJS{
+  display: none;
+}
 #websiteHeading {
   color: white !important;
   font-weight: bold;
@@ -417,13 +419,13 @@ select, option{
 }
 
 .disabled_button, .disabled_button:hover{
-  color: #9A99AA;
+  color: #c8c7d6;
   cursor: not-allowed !important;
 }
 
 .disabled_button i, .disabled_button span,
 .disabled_button i:hover, .disabled_button span:hover{
-  color: #9A99AA;
+  color: #c8c7d6;
   cursor: not-allowed !important;
 }
 

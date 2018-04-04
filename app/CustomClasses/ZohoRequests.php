@@ -10,7 +10,7 @@ use App\Project;
 use Auth;
 
 /**
- * This class is for retrieving Zoho data.
+ * This class is for dealing with Zoho's API'.
  *
  * @author Elias Falconi
  */
@@ -29,7 +29,8 @@ class ZohoRequests {
     public function updateTasksTable(){
 
         $this->zohoTasksViaKali();
-        $everyTask = Task::select('zoho_id')->get();
+        $everyTask = Task::all();
+
         foreach($this->allTasks as $t){
             array_push($this->taskIDs, $t['id']);
 
@@ -55,13 +56,11 @@ class ZohoRequests {
             }
         }
 
-        foreach($everyTask as $thisTask){
-          if(!in_array($thisTask->zoho_id, $this->taskIDs)){
-            $thisTask->users()->detach();
-            $thisTask->delete();
-          }else{
-
-          }
+        foreach($everyTask as $task){
+          if(!in_array($task->zoho_id, $this->taskIDs)){
+            $task->users()->detach();
+            $task->delete();
+          }else{}
         }
     }
 
@@ -284,7 +283,7 @@ class ZohoRequests {
         $code = $response->getStatusCode();
 
         if($code == 201){
-          $timeEntries = TimeEntry::where('project_name', 'LIKE', '%'.$projectName.'%')->where('task', 'LIKE', '%'.$taskName.'%')->get();
+          $timeEntries = TimeEntry::where('project_name', 'LIKE', '%'.$projectName.'%')->where('task', 'LIKE', '%'.$taskName.'%')->where('user_id', Auth::user()->id)->get();
 
           foreach($timeEntries as $timeEntry){
             $timeEntry->delete();

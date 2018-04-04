@@ -11,7 +11,7 @@
             <th>ACTIONS</th>
           </tr>
           @foreach($allEntries as $entry)
-            <tr>
+            <tr data-tr-ptu-id="{{ $entry['project_name'] }} {{ $entry['task'] }} {{ $entry['user_id'] }}">
               <td>@if($entry['start_time'] === null) @else {{ $entry['formatted_start_time'] }} - {{ $entry['formatted_end_time']  }} @endif</td>
               <td>{{ $entry['duration'] }}</td>
               <td>
@@ -24,10 +24,10 @@
               <td>{{ $entry['task'] }}</td>
               <td>{{ $entry['description'] }}</td>
               <td>
-                <i 
-                data-toggle="modal" 
-                data-target="#editModal" 
-                data-edit-id="{{ $entry['id'] }}" 
+                <i
+                data-toggle="modal"
+                data-target="#editModal"
+                data-edit-id="{{ $entry['id'] }}"
                 data-textarea="{{ $entry['description'] }}"
                 data-task="{{ $entry['task'] }}"
                 data-project-name="{{ $entry['project_name'] }}"
@@ -35,9 +35,11 @@
                 data-duration="{{ $entry['duration'] }}"
                 data-start-time="{{ $entry['start_time'] }}"
                 data-end-time="{{ $entry['end_time'] }}"
-                class="fas fa-pencil-alt"                                                
+                data-edit-ptu-id="{{ $entry['project_name'] }} {{ $entry['task'] }} {{ $entry['user_id'] }}"
+                class="fas fa-pencil-alt"
                 ></i>
-                <i data-toggle="modal" data-target="#deleteModal" data-delete-id="{{ $entry['id'] }}" class="fas fa-trash"></i>                                                      
+                <i data-toggle="modal" data-target="#deleteModal" data-delete-id="{{ $entry['id'] }}"
+                data-delete-ptu-id="{{ $entry['project_name'] }} {{ $entry['task'] }} {{ $entry['user_id'] }}" class="fas fa-trash"></i>
               </td>
             </tr>
           @endforeach

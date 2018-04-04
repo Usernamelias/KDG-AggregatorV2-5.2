@@ -10,6 +10,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::post('tasks', ['as' => 'tasks', function() {
+	return \Queue::marshal();
+}]);
 
 Route::get('/', 'HomeController@index');
 Route::get('/update-tables', 'ZohoAPIController@updateTables');
@@ -17,32 +20,39 @@ Route::get('/update-tables', 'ZohoAPIController@updateTables');
 Route::auth();
 Route::get('auth/logout','Auth\AuthController@getLogout');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['web']], function () {
+	Route::group(['middleware' => 'auth'], function () {
 
-	Route::group(['middleware' => 'zohoAuth'], function () {
-		Route::get('/work-done', 'TimeEntryController@showWorkDonePage');
-		Route::post('/work-done/add', 'TimeEntryController@saveTimeEntry');
+		Route::group(['middleware' => 'zohoAuth'], function () {
+			Route::get('/work-done', 'TimeEntryController@showWorkDonePage');
 
-		Route::post('/work-done/delete_entry', 'TimeEntryController@deleteTimeEntry');
+			Route::get('/work-done/add', 'UtilityController@redirectBack');
+			Route::post('/work-done/add', 'TimeEntryController@saveTimeEntry');
 
-		Route::post('/work-done/edit_entry', 'TimeEntryController@editTimeEntry');
+			Route::get('/work-done/delete_entry', 'UtilityController@redirectBack');
+			Route::post('/work-done/delete_entry', 'TimeEntryController@deleteTimeEntry');
 
-		Route::get('/projects', 'ProjectController@showProjectsPage');
+			Route::get('/work-done/edit_entry', 'UtilityController@redirectBack');
+			Route::post('/work-done/edit_entry', 'TimeEntryController@editTimeEntry');
 
-		Route::post('/projects', 'ProjectController@projectEnabledDisabled');
+			Route::get('/projects', 'ProjectController@showProjectsPage');
 
-		Route::get('/projects/update-tasks', 'ProjectController@runTasksUpdate');
+			Route::post('/projects', 'ProjectController@projectEnabledDisabled');
 
-		Route::post('/work-done', 'TimeEntryController@sync');
+			Route::get('/projects/update-tasks', 'ProjectController@runTasksUpdate');
+
+			Route::post('/work-done', 'TimeEntryController@sync');
+		});
+
+		Route::post('/authtoken', 'AuthTokenController@saveAuthToken');
+
+		Route::get('/authtoken', 'AuthTokenController@showAuthTokenPage');
+
+		Route::get('/settings', 'SettingsController@showSettingsPage');
+		Route::post('/settings', 'SettingsController@resetPassword');
 	});
-
-	Route::post('/authtoken', 'AuthTokenController@saveAuthToken');
-
-	Route::get('/authtoken', 'AuthTokenController@showAuthTokenPage');
-
-	Route::get('/settings', 'SettingsController@showSettingsPage');
-	Route::post('/settings', 'SettingsController@resetPassword');
 });
+
 
 
 
