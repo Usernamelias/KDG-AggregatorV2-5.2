@@ -97,11 +97,33 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="/js/teproject.js"></script>
         <script type="text/javascript">
-            $(document).ready(function() {
-                window.setTimeout(function(){
-                    window.location.href = window.location.href;
-                },3600000);
-            });
+          $(document).ready(function() {
+            var mins = 0.1;
+            var interval = 1000*60*mins;
+            setInterval(function(){
+              // $.get('/check-session', function(data) {
+              //   console.log("ldld:" + data.success);
+              //   if (data.success === '1') {
+              //     location.reload();
+              //   }
+              // });
+              $.ajax({
+
+                type:'GET',
+                url:'/check-session',
+                success: function(data){
+                  //alert(data);
+                  console.log(data.success);
+                  // if(data.success === '1'){
+                  //   //window.location.href = '/login';
+                  // }
+                },
+                error: function(data){
+                  //console.log(data.error);
+                }
+              });
+            }, interval);
+          });
         </script>
         @stack('body')
       </div>

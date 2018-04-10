@@ -70,9 +70,17 @@ class AuthController extends Controller
         ]);
     }
 
+    public function checkSession(){
+      $success = '0';
+      if(Auth::guest()){
+        $success = '1';
+      }
+      
+      return json_encode(['success' => $success]);
+    }
     // protected function getLogout(){
     //     $this->auth->logout();
-        
+
     //     return redirect('/');
     // }
 }

@@ -1,0 +1,7 @@
+cron:
+
+# cron:
+# - description: "Update Zoho data."
+#   url: /update-tables
+#   schedule: every 1 hours from 07:00 to 21:00
+#   timezone: America/New_York

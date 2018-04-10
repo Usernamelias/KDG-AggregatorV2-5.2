@@ -19,6 +19,7 @@ Route::get('/update-tables', 'ZohoAPIController@updateTables');
 
 Route::auth();
 Route::get('auth/logout','Auth\AuthController@getLogout');
+Route::get('/check-session', 'Auth\AuthController@checkSession');
 
 Route::group(['middleware' => ['web']], function () {
 	Route::group(['middleware' => 'auth'], function () {
@@ -42,6 +43,8 @@ Route::group(['middleware' => ['web']], function () {
 			Route::get('/projects/update-tasks', 'ProjectController@runTasksUpdate');
 
 			Route::post('/work-done', 'TimeEntryController@sync');
+
+
 		});
 
 		Route::post('/authtoken', 'AuthTokenController@saveAuthToken');

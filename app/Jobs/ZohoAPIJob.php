@@ -38,7 +38,7 @@ class ZohoAPIJob extends Job implements ShouldQueue
         $zohoRequest->updateUsersTable();
         $zohoRequest->updateTasksTable();
         $zohoRequest->updateProjectUserTable();
-        $zohoRequest->updateTaskUserTable();
+        //$zohoRequest->updateTaskUserTable();
 
         $this->delete();
     }
