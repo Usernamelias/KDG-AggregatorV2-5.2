@@ -98,28 +98,17 @@
         <script src="/js/teproject.js"></script>
         <script type="text/javascript">
           $(document).ready(function() {
-            var mins = 0.1;
+            var mins = 60;
             var interval = 1000*60*mins;
             setInterval(function(){
-              // $.get('/check-session', function(data) {
-              //   console.log("ldld:" + data.success);
-              //   if (data.success === '1') {
-              //     location.reload();
-              //   }
-              // });
               $.ajax({
-
                 type:'GET',
                 url:'/check-session',
+                dataType: 'json',
                 success: function(data){
-                  //alert(data);
-                  console.log(data.success);
-                  // if(data.success === '1'){
-                  //   //window.location.href = '/login';
-                  // }
-                },
-                error: function(data){
-                  //console.log(data.error);
+                  if(data.success === '1'){
+                    location.reload();
+                  }
                 }
               });
             }, interval);

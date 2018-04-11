@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Extensions\AppEngineStorageSessionHandler;
+use Auth;
 
 /**
  * This class is for holding utility functions.
@@ -55,7 +56,7 @@ class UtilityController extends Controller{
     public static function startSession(){
         $session = new AppEngineStorageSessionHandler();
         session_set_save_handler($session, true);
-        
+
         session_start();
     }
 
@@ -65,5 +66,14 @@ class UtilityController extends Controller{
      */
     public function redirectBack(){
         return redirect()->back();
+    }
+
+    public static function checkSession(){
+      $success = '0';
+      if(Auth::guest()){
+        $success = '1';
+      }
+
+      return json_encode(['success' => $success]);
     }
 }

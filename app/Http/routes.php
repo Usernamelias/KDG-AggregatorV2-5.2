@@ -19,7 +19,7 @@ Route::get('/update-tables', 'ZohoAPIController@updateTables');
 
 Route::auth();
 Route::get('auth/logout','Auth\AuthController@getLogout');
-Route::get('/check-session', 'Auth\AuthController@checkSession');
+Route::get('/check-session', 'UtilityController@checkSession');
 
 Route::group(['middleware' => ['web']], function () {
 	Route::group(['middleware' => 'auth'], function () {

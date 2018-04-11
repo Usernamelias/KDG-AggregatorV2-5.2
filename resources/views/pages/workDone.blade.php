@@ -12,9 +12,9 @@
 @endpush
 
 @section('content')
-  @include('modals.editFormModal')    
+  @include('modals.editFormModal')
     <div class="container-fluid tablesContainer">
-      @include('forms.addEntryForm')  
+      @include('forms.addEntryForm')
       <div class="col-sm-8 col-sm-pull-4 tables">
 
         <h4 id="selectDate">Select Date:</h4>
@@ -27,9 +27,9 @@
         </form>
         @include('modals.deleteEntryModal')
         @include('tables.todaysEntries')
-        @include('tables.aggregatedEntries')     
+        @include('tables.aggregatedEntries')
       </div>
-        
+
     </div>
 @endsection
 
@@ -39,13 +39,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
   <script src="/js/entryForms.js"></script>
   <script type="text/javascript">
-    $(document).ready(function(){   
+    $(document).ready(function(){
       $('.search-select').select2({
         width: '100%',
       });
 
-      $("#datepicker").datepicker({ 
-            autoclose: true, 
+      $("#datepicker").datepicker({
+            autoclose: true,
             todayHighlight: true,
       }).datepicker(new Date());
   });
@@ -58,14 +58,14 @@
       $(".combobox").bind('change',function() {
         var $parent = $(this).closest('form');
         $parent.find('.taskSelectField select').children('option:not(:first)').remove();
-        
+
         var projectID = $(this).find(':selected').data('id');
-       
+
         var taskNameArray = [];
 
         allTasks.forEach(function(task) {
           if(task['zoho_project_id'] == projectID || task['zoho_project_id'] === projectID){
-            taskNameArray.push(task['name']);   
+            taskNameArray.push(task['name']);
           }
         });
 
@@ -78,7 +78,7 @@
         $parent.find('.taskSelectField select').append(option);
 
         var oldValue = $parent.find('.taskSelectField select').attr('data-old');
-       
+
         if(oldValue){
           $parent.find('.taskSelectField select').val(oldValue);
         }
@@ -86,5 +86,5 @@
 
     });
   </script>
-<!-- End 'Task population for entry forms' --> 
+<!-- End 'Task population for entry forms' -->
 @endpush
