@@ -28,6 +28,8 @@
         @include('modals.deleteEntryModal')
         @include('tables.todaysEntries')
         @include('tables.aggregatedEntries')
+        <p id="billableTotal">Billable Total: <span>{{ $billableTotal }}</span></p>
+        <p id="nonBillableTotal">Non-Billable Total: <span>{{ $nonBillableTotal }}</span></p>
       </div>
 
     </div>

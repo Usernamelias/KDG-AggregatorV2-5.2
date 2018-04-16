@@ -70,8 +70,6 @@ a.active:link, a.active:visited, a.active:active, a.active:hover {
 
 .tables {
   background-color: #F0F0F7;
-
-
   display: block;
   padding-left: 40px;
   padding-right: 40px;
@@ -631,6 +629,21 @@ select, option{
 .messageRed {
   text-align: center;
   font-size: 1.2em;
+}
+
+#billableTotal span{
+  color: #2BA2AD;
+  font-weight: bold;
+}
+
+#nonBillableTotal span{
+  color: red;
+  font-weight: bold;
+}
+
+#nonBillableTotal, #billableTotal{
+
+    font-size: 1.2em;
 }
 /*Toggle Switch for Projects. Source: https://www.w3schools.com/howto/howto_css_switch.asp*/
 

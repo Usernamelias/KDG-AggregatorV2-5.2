@@ -46,6 +46,8 @@ class TimeEntryController extends Controller
                 })->orderBy('name')->get();
     $aggregatedTotals = 0;
     $durationTotal = 0;
+    $billableTotal = 0;
+    $nonBillableTotal = 0;
 
     if($entryDate == null || $request->entryDate == Carbon::now('America/New_York')->format('m-d-Y')){
       if($entryDate != null){
@@ -70,6 +72,11 @@ class TimeEntryController extends Controller
 
     for($i = 0; $i < sizeof($allEntries); $i++){
       $durationTotal = $durationTotal + $allEntries[$i]['duration'];
+      if($allEntries[$i]['billable'] == 1){
+        $billableTotal = $billableTotal + $allEntries[$i]['duration'];
+      }else{
+        $nonBillableTotal = $nonBillableTotal + $allEntries[$i]['duration'];
+      }
     }
 
     for($i = 0; $i < sizeof($aggregatedEntries); $i++){
@@ -94,7 +101,9 @@ class TimeEntryController extends Controller
       'singleEntriesTableHeadline' => $singleEntriesTableHeadline,
       'aggregatedEntriesTableHeadline' => $aggregatedEntriesTableHeadline,
       'activeProjects' => $activeProjects,
-      'entryDate' => $entryDate
+      'entryDate' => $entryDate,
+      'billableTotal' => UtilityController::makeDurationDisplayReady($billableTotal),
+      'nonBillableTotal' => UtilityController::makeDurationDisplayReady($nonBillableTotal)
     ]);
   }
 
